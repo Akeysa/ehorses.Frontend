@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "dgSpecHash": "cIt92XsJK3A=",
+  "success": false,
+  "projectFilePath": "/Users/lea/Desktop/projects/ehorses/ehorses.Frontend/ehorses.Frontend/ehorses.Frontend.csproj",
+  "expectedPackageFiles": [
+    "/Users/lea/.nuget/packages/bootstrap/5.3.6/bootstrap.5.3.6.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/lea/Desktop/projects/ehorses/ehorses.Api/ehorses.Api/ehorses.Api.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "/Users/lea/Desktop/projects/ehorses/ehorses.Api/ehorses.Api/ehorses.Api.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    },
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to find project information for '/Users/lea/Desktop/projects/ehorses/ehorses.Models/ehorses.Models/ehorses.Models.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
+      "libraryId": "/Users/lea/Desktop/projects/ehorses/ehorses.Models/ehorses.Models/ehorses.Models.csproj",
+      "targetGraphs": [
+        "net9.0"
+      ]
+    }
+  ]
+}
