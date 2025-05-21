@@ -1,0 +1,124 @@
+@page "/horses"
+@using ehorses.Models
+@inject HorseService HorseService
+
+<h3 class="text-center mb-5">Horse Management</h3>
+
+<div class="d-flex flex-wrap gap-4 justify-content-center align-items-start container" style="gap: 4rem;">
+
+    <!-- Left Column: Add Horse Form -->
+    <div class="flex-grow-1" style="min-width: 300px; max-width: 400px;">
+        <h5 class="mb-3">Add New Horse</h5>
+        <EditForm Model="newHorse" OnValidSubmit="AddHorse">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <InputText class="form-control" @bind-Value="newHorse.Name" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Breed</label>
+                <InputText class="form-control" @bind-Value="newHorse.Breed" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Color</label>
+                <InputText class="form-control" @bind-Value="newHorse.Color" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Birth Date</label>
+                <InputDate class="form-control" @bind-Value="newHorse.BirthDate" />
+            </div>
+
+            <div class="form-check mb-3">
+                <InputCheckbox class="form-check-input" @bind-Value="newHorse.ForSale" />
+                <label class="form-check-label ms-2">For Sale</label>
+            </div>
+
+            <button class="btn btn-success w-100" type="submit">Add Horse</button>
+        </EditForm>
+    </div>
+
+    <!-- Right Column: Horse List -->
+    <div class="flex-grow-1" style="min-width: 600px;">
+        <h5 class="mb-3">Available Horses</h5>
+
+        @if (horses == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else if (!horses.Any())
+        {
+            <p>No horses available.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped align-middle text-center shadow-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Breed</th>
+                            <th>Color</th>
+                            <th>Birth Date</th>
+                            <th>For Sale</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var horse in horses)
+                        {
+                            <tr>
+                                <td>@horse.Name</td>
+                                <td>@horse.Breed</td>
+                                <td>@horse.Color</td>
+                                <td>@horse.BirthDate.ToString("yyyy-MM-dd")</td>
+                                <td>@(horse.ForSale ? "Yes" : "No")</td>
+                                <td>
+                                    <button class="btn btn-outline-danger btn-sm" @onclick="() => DeleteHorse(horse.Id)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<Horse> horses;
+    private Horse newHorse = new Horse();
+
+    protected override void OnInitialized()
+    {
+        // Dummy-Daten simulieren
+        horses = new List<Horse>
+        {
+            new Horse { Id = 1, Name = "Sam", Breed = "Hannoveraner", BirthDate = new DateTime(2019, 1, 1), Color = "Braun", ForSale = false},
+            new Horse { Id = 2, Name = "Justus", Breed = "Friese",BirthDate = new DateTime(2010, 1, 1), Color = "Schwarz", ForSale = false },
+            new Horse { Id = 3, Name = "Luna", Breed = "Arabisches Vollblut",BirthDate = new DateTime(2016, 1, 1), Color = "Braun", ForSale = true }
+        };
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        horses = await HorseService.GetAllHorsesAsync();
+    }
+
+    private async Task AddHorse()
+    {
+        await HorseService.AddHorseAsync(newHorse);
+        horses = await HorseService.GetAllHorsesAsync();
+        newHorse = new Horse();
+    }
+
+    private async Task DeleteHorse(int id)
+    {
+        await HorseService.DeleteHorseAsync(id);
+        horses = await HorseService.GetAllHorsesAsync();
+    }
+}
